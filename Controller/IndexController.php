@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class IndexController extends BaseController
 {
-    public const DATABASE = 'users';
+    public const DATABASE = 'user';
 
     #[Route('/login', name: 'usersLogin')]
     public function login(Request $request): Response
@@ -32,9 +32,7 @@ class IndexController extends BaseController
     }
 
     /**
-     * @param Request $request
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @return Response
+     * @throws \ReflectionException
      * @throws \JsonException
      * @throws \Exception
      */
@@ -43,7 +41,6 @@ class IndexController extends BaseController
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
     ): Response {
-
         $user = $this->toEntity(User::class, $request->getContent());
 
         if ($user instanceof User) {
@@ -55,17 +52,11 @@ class IndexController extends BaseController
             );
         }
 
-        $validator = $this->getValidator();
-        if ($validator->isValid($user)) {
-            $result['messages'] = $validator->getMessages();
-            $result['code'] = Response::HTTP_BAD_REQUEST;
-        } else {
-            // Получить соединение
-            $em = $this->getEntityManager();
-            $em->persist($user);
-            $em->flush();
-            $result['code'] = Response::HTTP_OK;
-        }
+        // Получить соединение
+        $em = $this->getEntityManager();
+        $em->persist($user);
+        $em->flush();
+        $result['code'] = Response::HTTP_OK;
 
         return $this->json($result);
     }
