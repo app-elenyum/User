@@ -12,7 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class IndexController extends BaseController
 {
-    public const DATABASE = 'user';
+    protected const DATABASE = 'user';
+    protected const ENTITY = 'Module\User\Entity\User';
 
     #[Route('/login', name: 'usersLogin')]
     public function login(Request $request): Response
