@@ -30,23 +30,31 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     #[ORM\Column(type: "string", length: 200)]
     #[Assert\Length(min: 3, max: 200)]
+    #[Assert\NotBlank]
     private string $name;
 
     #[ORM\Column(type: "string", length: 180, unique: true)]
     #[Assert\Length(min: 5, max: 180)]
+    #[Assert\NotBlank]
     #[Assert\Email]
     private string $email;
 
-    #[ORM\Column(type: "integer")]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: "integer", nullable: false)]
     #[Assert\Choice(choices: [self::STATUS_NEW, self::STATUS_CONFIRMED, self::STATUS_BLOCKED])]
     private int $status;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 5, max: 20)]
     #[ORM\Column(type: "string", length: 20, unique: true)]
     private string $phone;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: "string", length: 255)]
     private string $password;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 20, max: 255)]
     #[ORM\Column(type: "string", length: 255)]
     private string $address;
 
