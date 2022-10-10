@@ -3,6 +3,7 @@
 namespace Module\User\Entity;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Module\User\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -25,43 +26,43 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(type: "string", length: 200)]
+    #[ORM\Column(type: Types::STRING, length: 200)]
     #[Assert\Length(min: 3, max: 200)]
     #[Assert\NotBlank]
     private string $name;
 
-    #[ORM\Column(type: "string", length: 180, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     #[Assert\Length(min: 5, max: 180)]
     #[Assert\NotBlank]
     #[Assert\Email]
     private string $email;
 
     #[Assert\NotBlank]
-    #[ORM\Column(type: "integer", nullable: false)]
+    #[ORM\Column(type: Types::INTEGER, nullable: false)]
     #[Assert\Choice(choices: [self::STATUS_NEW, self::STATUS_CONFIRMED, self::STATUS_BLOCKED])]
     private int $status;
 
     #[Assert\NotBlank]
     #[Assert\Length(min: 5, max: 20)]
-    #[ORM\Column(type: "string", length: 20, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 20, unique: true)]
     private string $phone;
 
     #[Assert\NotBlank]
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $password;
 
     #[Assert\NotBlank]
     #[Assert\Length(min: 20, max: 255)]
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $address;
 
-    #[ORM\Column(type: "date_immutable")]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: "date_immutable", nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private DateTimeImmutable $updatedAt;
 
     public function __construct()
